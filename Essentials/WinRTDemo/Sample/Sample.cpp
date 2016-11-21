@@ -148,6 +148,8 @@ public:
 // So, all inteface implementations of IUnknown goes into Hen class.
 // Here, we create a new class named Hen2 which will make use of Implements<> template class that implements
 // variadic template to get the list of all interfaces that Hen2 class will implement
+// note that there is no COM plumbing requirements in Hen2 class now! This class simply has to implement interfaces
+// that are defined in its Interface lists...
 class Hen2 : public Implements<IHen>
 {
 public:
