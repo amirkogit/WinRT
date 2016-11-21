@@ -1,3 +1,5 @@
+#if 0 // set to 1 to run main function in this file
+
 #include "Precompiled.h"
 #include <windows.h>
 #include <type_traits>
@@ -62,7 +64,7 @@ public:
     }
 
     HRESULT __stdcall QueryInterface(GUID const & id,
-        void ** object) noexcept
+                                     void ** object) noexcept
     {
         *object = BaseQueryInterface<Interfaces ...>(id);
 
@@ -188,7 +190,6 @@ public:
     }
 };
 
-
 // helper function to get a COM pointer wrapped in ComPtr
 template <typename T>
 ComPtr<T> Make() noexcept
@@ -261,3 +262,5 @@ int main()
     ComPtr<IStream> invalid;
     ASSERT(E_NOINTERFACE == hen2.As(&invalid));
 }
+
+#endif // 0 
