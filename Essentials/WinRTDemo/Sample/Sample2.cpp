@@ -1,6 +1,6 @@
 // testing IInspectable derived interface
 
-#if 1 //// set to 1 to run main function in this file
+#if 1 // set to 1 to run main function in this file
 
 #include "Precompiled.h"
 #include <windows.h>
@@ -101,12 +101,12 @@ public:
 
     HenInspectable()
     {
-        Trace(L"Hen2 constructed ...\n");
+        Trace(L"[HenInspectable] constructed ...\n");
     }
 
     ~HenInspectable()
     {
-        Trace(L"Hen2 destructed ...\n");
+        Trace(L"[HenInspectable] destructed ...\n");
     }
 
 
@@ -142,7 +142,7 @@ public:
 
     HRESULT __stdcall Cluck() noexcept
     {
-        Trace(L"Cluck from Hen2!\n");
+        Trace(L"Cluck from [HenInspectable]!\n");
         return S_OK;
     }
 
