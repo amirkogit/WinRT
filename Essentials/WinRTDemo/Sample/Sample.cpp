@@ -5,7 +5,7 @@
 using Microsoft::WRL::ComPtr;
 
 template<typename ... Interfaces>
-class __declspec(novtable) Implements : public Intefaces ...
+class __declspec(novtable) Implements : public Interfaces ...
 {
     long m_references = 1;
 
@@ -63,7 +63,7 @@ public:
     HRESULT __stdcall QueryInterface(GUID const & id,
         void ** object) noexcept
     {
-        *object = BaseQueryInteface<Interfaces ...>(id);
+        *object = BaseQueryInterface<Interfaces ...>(id);
 
         if (!*object)
         {
@@ -82,6 +82,8 @@ IHen : IUnknown
 };
 
 
+// old style: creating Hen class derived directly fron IHen
+// Here all code related to COM plumbing has to be written for eg: AddRef, Release... etc
 class Hen : public IHen
 {
     long m_references = 1;
@@ -90,12 +92,12 @@ public:
 
     Hen()
     {
-        Trace(L"Hen constructed.. Cheep\n");
+        Trace(L"Hen constructed ...\n");
     }
 
     ~Hen()
     {
-        Trace(L"Hen desctructed.. Chicken soup\n");
+        Trace(L"Hen destructed ...\n");
     }
 
     unsigned long __stdcall AddRef() noexcept
@@ -135,10 +137,37 @@ public:
 
     HRESULT __stdcall Cluck() noexcept
     {
-        Trace(L"Cluck!\n");
+        Trace(L"Cluck from Hen!\n");
         return S_OK;
     }
 };
+
+// New style:
+// In the old style Hen class was directly derived from IHen interface which was derived from IUnknown interface
+// So, all inteface implementations of IUnknown goes into Hen class.
+// Here, we create a new class named Hen2 which will make use of Implements<> template class that implements
+// variadic template to get the list of all interfaces that Hen2 class will implement
+class Hen2 : public Implements<IHen>
+{
+public:
+
+    Hen2()
+    {
+        Trace(L"Hen2 constructed ...\n");
+    }
+
+    ~Hen2()
+    {
+        Trace(L"Hen2 destructed ...\n");
+    }
+
+    HRESULT __stdcall Cluck() noexcept
+    {
+        Trace(L"Cluck from Hen2!\n");
+        return S_OK;
+    }
+};
+
 
 // helper function to get a COM pointer wrapped in ComPtr
 template <typename T>
@@ -152,6 +181,7 @@ ComPtr<T> Make() noexcept
 }
 
 // helper function that creates Hen objects
+// old style Hen
 HRESULT CreateHen(IHen ** hen) noexcept
 {
     ComPtr<IHen> temp = Make<Hen>();
@@ -166,11 +196,27 @@ HRESULT CreateHen(IHen ** hen) noexcept
     return S_OK;
 }
 
+// helper function that creates Hen2 objects
+// new style Hen2
+HRESULT CreateHen2(IHen ** hen) noexcept
+{
+    ComPtr<IHen> temp = Make<Hen2>();
+
+    if (!temp)
+    {
+        *hen = nullptr;
+        return E_OUTOFMEMORY;
+    }
+
+    *hen = temp.Detach();
+    return S_OK;
+}
 
 int main()
 {
     Trace(L"Windows Runtime demo\n");
 
+    // old style Hen object creation
     ComPtr<IHen> hen;
 
     HRESULT hr = CreateHen(hen.GetAddressOf());
@@ -179,4 +225,10 @@ int main()
     {
         hen->Cluck();
     }
+
+    // new style Hen2 object creation
+    ComPtr<IHen> hen2;
+    ASSERT(S_OK == CreateHen2(hen2.GetAddressOf()));
+
+    hen2->Cluck();
 }
