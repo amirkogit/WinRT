@@ -211,6 +211,7 @@ void TestInterfacePointers()
     ASSERT(S_OK == henInspectable.As(&layer));
 }
 
+void TestDynamicallyGetIids()
 {
     ComPtr<IHenInspectable> henInspectable;
 
@@ -234,6 +235,7 @@ int main()
 
     TestInterfacePointers();
 
+    TestDynamicallyGetIids();
 }
 
 #endif // 0 
