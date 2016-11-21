@@ -17,7 +17,7 @@ class __declspec(novtable) Implements : public Interfaces ...
 
     // recursive implementation
     template<typename First, typename ... Rest>
-    void * QueryInteface(GUID const & id) noexcept
+    void * QueryInterface(GUID const & id) noexcept
     {
         if (id == __uuidof(First))
         {
@@ -76,10 +76,19 @@ public:
     }
 };
 
+// Interface: IHen
 struct __declspec(uuid("3a8af621-4232-40dd-9582-4379030eb576")) __declspec(novtable)
 IHen : IUnknown
 {
     virtual HRESULT __stdcall Cluck() = 0;
+};
+
+
+// Interface: ILayer
+struct __declspec(uuid("fb550cc1-a0b7-4769-b0c1-52cce29c52dc")) __declspec(novtable)
+ILayer : IUnknown
+{
+    virtual HRESULT __stdcall ComputeLayer() = 0;
 };
 
 
@@ -150,7 +159,7 @@ public:
 // variadic template to get the list of all interfaces that Hen2 class will implement
 // note that there is no COM plumbing requirements in Hen2 class now! This class simply has to implement interfaces
 // that are defined in its Interface lists...
-class Hen2 : public Implements<IHen>
+class Hen2 : public Implements<IHen, ILayer>
 {
 public:
 
@@ -164,9 +173,17 @@ public:
         Trace(L"Hen2 destructed ...\n");
     }
 
+    // IHen
     HRESULT __stdcall Cluck() noexcept
     {
         Trace(L"Cluck from Hen2!\n");
+        return S_OK;
+    }
+
+    // ILayer
+    HRESULT __stdcall ComputeLayer() noexcept
+    {
+        Trace(L"Computing layer...\n");
         return S_OK;
     }
 };
@@ -234,4 +251,9 @@ int main()
     ASSERT(S_OK == CreateHen2(hen2.GetAddressOf()));
 
     hen2->Cluck();
+
+    // query for newly added interface: ILayer
+    ComPtr<ILayer> layer;
+    ASSERT(S_OK == hen2.As(&layer));
+    layer->ComputeLayer();
 }
