@@ -8,10 +8,20 @@
 
 using Microsoft::WRL::ComPtr;
 
+template<typename T>
+struct Cloaked : T {};
+
 template<typename ... Interfaces>
 class __declspec(novtable) Implements : public Interfaces ...
 {
     long m_references = 1;
+
+    template<typename T>
+    struct IsCloaked : std::false_type {};
+
+    // template specialization for Cloaked type = true
+    template<typename T>
+    struct IsCloaked<Cloaked<T>> : std::true_type {};
 
     template<int = 0> // placeholder template argument to make compiler not complain
     void * QueryInterface(GUID const &) noexcept
@@ -51,12 +61,28 @@ class __declspec(novtable) Implements : public Interfaces ...
     }
 
     template<typename First, typename ... Rest>
-    void CopyInterfaces(GUID * const ids) noexcept
+    void CopyInterfaces(GUID * ids) noexcept
     {
-        *ids = __uuidof(First);
+        if (!IsCloaked<First>::value)
+        {
+            *ids++ = __uuidof(First);
+        }
 
-        CopyInterfaces<Rest ...>(ids + 1);
+        CopyInterfaces<Rest ...>(ids);
     }
+
+    template<int = 0>
+    unsigned CountInterfaces() noexcept
+    {
+        return 0;
+    }
+
+    template<typename First, typename ... Rest>
+    unsigned CountInterfaces() noexcept
+    {
+        return !IsCloaked<First>::value + CountInterfaces<Rest ...>();
+    }
+
 
 protected:
     virtual ~Implements() noexcept {}
@@ -99,7 +125,15 @@ public:
         *pCount = 0;
         *pIds = nullptr;
 
-        unsigned const count = sizeof ... (Interfaces);
+        //unsigned const count = sizeof ... (Interfaces);
+        // use the recursive version
+        unsigned const count =
+            CountInterfaces<Interfaces ...>();
+
+        if (0 == count)
+        {
+            return S_OK;
+        }
 
         GUID * ids = static_cast<GUID *>(CoTaskMemAlloc(sizeof(GUID) * count));
 
@@ -142,7 +176,14 @@ struct __declspec(uuid("fb550cc1-a0b7-4769-b0c1-52cce29c52dc")) __declspec(novta
 };
 
 
-class HenInspectable : public Implements<IHenInspectable, ILayer>
+// Interface: IHenInterop
+struct __declspec(uuid("f4d49537-8955-4aa3-acfb-eccb22fde776")) __declspec(novtable)
+IHenInterop : IUnknown
+{
+
+};
+
+class HenInspectable : public Implements<IHenInspectable,Cloaked<IHenInterop>,ILayer>
 {
 public:
 
