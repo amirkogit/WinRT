@@ -1,6 +1,5 @@
 #include "Precompiled.h"
 #include <windows.h>
-#include <wrl.h>
 
 using Microsoft::WRL::ComPtr;
 
