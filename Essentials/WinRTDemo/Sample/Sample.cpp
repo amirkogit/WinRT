@@ -9,12 +9,13 @@ class __declspec(novtable) Implements : public Interfaces ...
 {
     long m_references = 1;
 
-    template<int = 0> // placeholder template argument
+    template<int = 0> // placeholder template argument to make compiler not complain
     void * QueryInterface(GUID const &) noexcept
     {
         return nullptr;
     }
 
+    // recursive implementation
     template<typename First, typename ... Rest>
     void * QueryInteface(GUID const & id) noexcept
     {
