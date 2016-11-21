@@ -256,4 +256,8 @@ int main()
     ComPtr<ILayer> layer;
     ASSERT(S_OK == hen2.As(&layer));
     layer->ComputeLayer();
+
+    // query for interface that doesn't exist
+    ComPtr<IStream> invalid;
+    ASSERT(E_NOINTERFACE == hen2.As(&invalid));
 }
