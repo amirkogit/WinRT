@@ -1,5 +1,8 @@
 #include "Precompiled.h"
 #include <windows.h>
+#include <wrl.h>
+
+using Microsoft::WRL::ComPtr;
 
 struct __declspec(uuid("3a8af621-4232-40dd-9582-4379030eb576")) __declspec(novtable)
 IHen : IUnknown
@@ -13,6 +16,16 @@ class Hen : public IHen
     long m_references = 1;
 
 public:
+
+    Hen()
+    {
+        Trace(L"Hen constructed.. Cheep\n");
+    }
+
+    ~Hen()
+    {
+        Trace(L"Hen desctructed.. Chicken soup\n");
+    }
 
     unsigned long __stdcall AddRef() noexcept
     {
@@ -56,7 +69,43 @@ public:
     }
 };
 
+// helper function to get a COM pointer wrapped in ComPtr
+template <typename T>
+ComPtr<T> Make() noexcept
+{
+    ComPtr<T> result;
+
+    result.Attach(new (std::nothrow) T);
+
+    return result;
+}
+
+// helper function that creates Hen objects
+HRESULT CreateHen(IHen ** hen) noexcept
+{
+    ComPtr<IHen> temp = Make<Hen>();
+
+    if (!temp)
+    {
+        *hen = nullptr;
+        return E_OUTOFMEMORY;
+    }
+
+    *hen = temp.Detach();
+    return S_OK;
+}
+
+
 int main()
 {
     Trace(L"Windows Runtime demo\n");
+
+    ComPtr<IHen> hen;
+
+    HRESULT hr = CreateHen(hen.GetAddressOf());
+
+    if (S_OK == hr)
+    {
+        hen->Cluck();
+    }
 }
