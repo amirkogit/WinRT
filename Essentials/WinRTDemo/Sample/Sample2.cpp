@@ -44,6 +44,20 @@ class __declspec(novtable) Implements : public Interfaces ...
         return QueryInterface<Rest ...>(id);
     }
 
+    template<int = 0>
+    void CopyInterfaces(GUID * const) noexcept
+    {
+
+    }
+
+    template<typename First, typename ... Rest>
+    void CopyInterfaces(GUID * const ids) noexcept
+    {
+        *ids = __uuidof(First);
+
+        CopyInterfaces<Rest ...>(ids + 1);
+    }
+
 protected:
     virtual ~Implements() noexcept {}
 
@@ -78,6 +92,39 @@ public:
         static_cast<IUnknown *>(*object)->AddRef();
         return S_OK;
     }
+
+    HRESULT __stdcall GetIids(unsigned long * pCount,
+                              GUID ** pIds) noexcept
+    {
+        *pCount = 0;
+        *pIds = nullptr;
+
+        unsigned const count = sizeof ... (Interfaces);
+
+        GUID * ids = static_cast<GUID *>(CoTaskMemAlloc(sizeof(GUID) * count));
+
+        if (!ids)
+        {
+            return E_OUTOFMEMORY;
+        }
+
+        CopyInterfaces<Interfaces ...>(ids);
+
+        *pCount = count;
+        *pIds = ids;
+        return S_OK;
+    }
+
+    HRESULT __stdcall GetRuntimeClassName(HSTRING *) noexcept
+    {
+        return E_NOTIMPL;
+    }
+
+    HRESULT __stdcall GetTrustLevel(TrustLevel * level) noexcept
+    {
+        *level = BaseTrust;
+        return S_OK;
+    }
 };
 
 // Interface: IHen
@@ -107,37 +154,6 @@ public:
     ~HenInspectable()
     {
         Trace(L"[HenInspectable] destructed ...\n");
-    }
-
-
-    HRESULT __stdcall GetIids(unsigned long * count,
-        GUID ** ids) noexcept
-    {
-        *count = 0;
-
-        *ids = static_cast<GUID *>(CoTaskMemAlloc(sizeof(GUID) * 2));
-
-        if (!*ids)
-        {
-            return E_OUTOFMEMORY;
-        }
-
-        *count = 2;
-        (*ids)[0] = __uuidof(IHenInspectable);
-        (*ids)[1] = __uuidof(ILayer);
-
-        return S_OK;
-    }
-
-    HRESULT __stdcall GetRuntimeClassName(HSTRING *) noexcept
-    {
-        return E_NOTIMPL;
-    }
-
-    HRESULT __stdcall GetTrustLevel(TrustLevel * level) noexcept
-    {
-        *level = BaseTrust;
-        return S_OK;
     }
 
     HRESULT __stdcall Cluck() noexcept
@@ -175,10 +191,8 @@ HRESULT CreateHen(IHenInspectable ** hen) noexcept
     return S_OK;
 }
 
-int main()
+void TestInterfacePointers()
 {
-    Trace(L"Windows Runtime demo\n");
-
     ComPtr<IHenInspectable> henInspectable;
     ASSERT(S_OK == CreateHen(henInspectable.GetAddressOf()));
 
@@ -195,6 +209,31 @@ int main()
 
     ComPtr<ILayer> layer;
     ASSERT(S_OK == henInspectable.As(&layer));
+}
+
+{
+    ComPtr<IHenInspectable> henInspectable;
+
+    ASSERT(S_OK == CreateHen(henInspectable.GetAddressOf()));
+
+    ULONG count = 0;
+    GUID * guids = nullptr;
+
+    ASSERT(S_OK == henInspectable->GetIids(&count, &guids));
+
+    ASSERT(2 == count);
+    ASSERT(guids[0] == __uuidof(IHenInspectable));
+    ASSERT(guids[1] == __uuidof(ILayer));
+
+    CoTaskMemFree(guids);
+}
+
+int main()
+{
+    Trace(L"Windows Runtime demo\n");
+
+    TestInterfacePointers();
+
 }
 
 #endif // 0 
