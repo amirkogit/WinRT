@@ -101,6 +101,59 @@ String Substring(String const & string,
     return result;
 }
 
+//! Wrapper class for handling immutable strings 
+struct StringBufferTraits
+{
+    using Pointer = HSTRING_BUFFER;
+
+    static Pointer Invalid() noexcept
+    {
+        return nullptr;
+    }
+
+    static void Close(Pointer value) noexcept
+    {
+        VERIFY_(S_OK,WindowsDeleteStringBuffer(value));
+    }
+};
+
+
+using StringBuffer = Handle<StringBufferTraits>;
+
+template<typename ... Args>
+String Format(wchar_t const * format, Args ... args)
+{
+    int const size = swprintf(nullptr, 0, format, args ...);
+
+    if (-1 == size)
+    {
+        throw Exception(E_INVALIDARG);
+    }
+
+    if (0 == size)
+    {
+        return String();
+    }
+
+    StringBuffer buffer;
+    wchar_t * target = nullptr;
+
+    Check(WindowsPreallocateStringBuffer(size,
+                                        &target,
+                                        buffer.GetAddressOf()));
+
+    swprintf(target, size + 1, format , args ...);
+
+    String result;
+
+    Check(WindowsPromoteStringBuffer(buffer.Get(), 
+                                     result.GetAddressOf()));
+
+    buffer.Detach();
+
+    return result;
+}
+
 void CreateStringTest()
 {
     TRACE(L"Windows runtime strings demo\n");
@@ -138,6 +191,13 @@ void SubstringTest()
     ASSERT(0 == wcscmp(Buffer(s), Buffer(c)));
 }
 
+void FormatTest()
+{
+    String s = Format(L"Format strings %d", 1234);
+
+    printf("%ls (%d)\n", Buffer(s), Length(s));
+}
+
 int main()
 {
     CreateStringTest();
@@ -145,4 +205,6 @@ int main()
     DuplicateTest();
 
     SubstringTest();
+
+    FormatTest();
 }
