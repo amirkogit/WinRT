@@ -164,6 +164,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Implements.h" />
     <ClInclude Include="Precompiled.h" />
   </ItemGroup>
   <ItemGroup>
