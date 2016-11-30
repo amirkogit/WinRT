@@ -79,6 +79,28 @@ bool Empty(String const & string) noexcept
     return 0 != WindowsIsStringEmpty(string.Get());
 }
 
+String Duplicate(String const & string)
+{
+    String result;
+
+    Check(WindowsDuplicateString(string.Get(),
+                           result.GetAddressOf()));
+
+    return result;
+}
+
+String Substring(String const & string,
+                 unsigned const start)
+{
+    String result;
+
+    Check(WindowsSubstring(string.Get(),
+                           start,
+                           result.GetAddressOf()));
+
+    return result;
+}
+
 void CreateStringTest()
 {
     TRACE(L"Windows runtime strings demo\n");
@@ -94,7 +116,33 @@ void CreateStringTest()
         0 == length ? "Yes" : "No");
 }
 
+void DuplicateTest()
+{
+    String s = CreateString(L"Runtime strings");
+
+    String d = Duplicate(s);
+
+    ASSERT(s.Get() == d.Get());
+}
+
+void SubstringTest()
+{
+    String s = CreateString(L"Runtime strings");
+
+    String c = Substring(s,0);
+
+    ASSERT(s.Get() != c.Get());
+
+    ASSERT(Length(s) == Length(s));
+
+    ASSERT(0 == wcscmp(Buffer(s), Buffer(c)));
+}
+
 int main()
 {
     CreateStringTest();
+
+    DuplicateTest();
+
+    SubstringTest();
 }
