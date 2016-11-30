@@ -154,6 +154,42 @@ String Format(wchar_t const * format, Args ... args)
     return result;
 }
 
+// Optimized String object without reference counting
+class StringReference
+{
+    HSTRING m_string;
+    HSTRING_HEADER m_header;
+
+public:
+    StringReference(StringReference const &) = delete;
+    StringReference & operator=(StringReference const &) = delete;
+    void * operator new(std::size_t) = delete;
+    void * operator new[](std::size_t) = delete;
+    void operator delete(void *) = delete;
+    void operator delete[](void *) = delete;
+
+    StringReference(wchar_t const * const value,
+        unsigned length)
+    {
+        Check(WindowsCreateStringReference(value,
+                                           length,
+                                           &m_header,
+                                           &m_string));
+    }
+
+    template<unsigned Count>
+    StringReference(wchar_t const (&value)[Count]) :
+        StringReference(value, Count - 1)
+    {
+
+    }
+
+    HSTRING Get() const noexcept
+    {
+        return m_string;
+    }
+};
+
 void CreateStringTest()
 {
     TRACE(L"Windows runtime strings demo\n");
@@ -198,6 +234,24 @@ void FormatTest()
     printf("%ls (%d)\n", Buffer(s), Length(s));
 }
 
+// helper function for testing StringReferenceTest()
+void Call(HSTRING string)
+{
+    String copy;
+
+    Check(WindowsDuplicateString(string, 
+                                 copy.GetAddressOf()));
+
+    ASSERT(string != copy.Get());
+}
+
+void StringReferenceTest()
+{
+    StringReference s(L"String reference test");
+
+    Call(s.Get());
+}
+
 int main()
 {
     CreateStringTest();
@@ -207,4 +261,6 @@ int main()
     SubstringTest();
 
     FormatTest();
+
+    StringReferenceTest();
 }
