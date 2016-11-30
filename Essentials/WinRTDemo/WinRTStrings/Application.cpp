@@ -79,7 +79,7 @@ bool Empty(String const & string) noexcept
     return 0 != WindowsIsStringEmpty(string.Get());
 }
 
-int main()
+void CreateStringTest()
 {
     TRACE(L"Windows runtime strings demo\n");
 
@@ -89,8 +89,12 @@ int main()
     wchar_t const * const buffer = Buffer(s, length);
 
     printf("\"%ls\" length=%d empty=%s\n",
-            buffer,
-            length,
-            0 == length ? "Yes" : "No");
+        buffer,
+        length,
+        0 == length ? "Yes" : "No");
+}
 
+int main()
+{
+    CreateStringTest();
 }
