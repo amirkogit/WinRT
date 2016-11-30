@@ -9,20 +9,33 @@
 using Microsoft::WRL::ComPtr;
 using namespace ABI::Windows::Globalization;
 
+template<typename Interface, unsigned Count>
+ComPtr<Interface> ActivateInstance(wchar_t const (&name)[Count])
+{
+    StringReference const string(name);
+
+    ComPtr<IActivationFactory> factory;
+
+    Check(RoGetActivationFactory(string.Get(),
+                                 __uuidof(factory),
+                                 reinterpret_cast<void **>(factory.GetAddressOf())));
+
+    ComPtr<IInspectable> inspectable;
+
+    Check(factory->ActivateInstance(inspectable.GetAddressOf()));
+
+    ComPtr<Interface> result;
+    Check(inspectable.As(&result));
+
+    return result;
+}
+
 int main()
 {
     Check(RoInitialize(RO_INIT_MULTITHREADED));
 
-    StringReference string(L"Windows.Globalization.Calendar");
-
-    ComPtr<IInspectable> inspectable;
-
-    Check(RoActivateInstance(string.Get(),
-                             inspectable.GetAddressOf()));
-
-    ComPtr<ICalendar> calendar;
-
-    Check(inspectable.As(&calendar));
+    ComPtr<ICalendar> calendar = 
+        ActivateInstance<ICalendar>(L"Windows.Globalization.Calendar");
 
     int year = 0;
 
