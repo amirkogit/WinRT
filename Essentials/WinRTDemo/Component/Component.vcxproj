@@ -97,7 +97,7 @@
     </Link>
     <Midl>
       <EnableWindowsRuntime>true</EnableWindowsRuntime>
-      <AdditionalMetadataDirectories>$(TargetPlatformWindMDLocation)</AdditionalMetadataDirectories>
+      <AdditionalMetadataDirectories>$(TargetPlatformWinMDLocation)</AdditionalMetadataDirectories>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <MetadataFileName>$(OutDir)%(Filename).winmd</MetadataFileName>
       <PrependWithABINamepsace>true</PrependWithABINamepsace>
@@ -138,7 +138,7 @@
     </Link>
     <Midl>
       <EnableWindowsRuntime>true</EnableWindowsRuntime>
-      <AdditionalMetadataDirectories>$(TargetPlatformWindMDLocation)</AdditionalMetadataDirectories>
+      <AdditionalMetadataDirectories>$(TargetPlatformWinMDLocation)</AdditionalMetadataDirectories>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <MetadataFileName>$(OutDir)%(Filename).winmd</MetadataFileName>
       <PrependWithABINamepsace>true</PrependWithABINamepsace>

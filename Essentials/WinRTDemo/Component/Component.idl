@@ -1,2 +1,18 @@
-import "oaidl.idl";
-import "ocidl.idl";
+import "inspectable.idl";
+
+namespace Component
+{
+    [version(1.0)]
+    [uuid(d259c600-6ec0-4b17-979d-5e04ee84c3fa)]
+    interface IHen : IInspectable
+    {
+        HRESULT Cluck();
+    }
+
+    [version(1.0)]
+    [activatable(1.0)]
+    runtimeclass Hen
+    {
+        [default] interface IHen;
+    }
+}
