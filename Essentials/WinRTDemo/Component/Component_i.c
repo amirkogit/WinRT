@@ -6,9 +6,9 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Wed Nov 30 11:47:28 2016
+/* at Thu Dec 01 09:38:46 2016
  */
-/* Compiler settings for C:\Users\ashresth\AppData\Local\Temp\Component.idl-a79296e3:
+/* Compiler settings for C:\Users\ashresth\AppData\Local\Temp\Component.idl-549fe519:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -68,6 +68,12 @@ typedef IID CLSID;
 #endif !_MIDL_USE_GUIDDEF_
 
 MIDL_DEFINE_GUID(IID, IID___x_ABI_CComponent_CIHen,0xd259c600,0x6ec0,0x4b17,0x97,0x9d,0x5e,0x04,0xee,0x84,0xc3,0xfa);
+
+
+MIDL_DEFINE_GUID(IID, IID___x_ABI_CComponent_CILayer,0x6d5d2b7b,0x7760,0x47af,0x8a,0xac,0x30,0x16,0x75,0x56,0xaa,0x7d);
+
+
+MIDL_DEFINE_GUID(IID, IID___x_ABI_CComponent_CIHenFactory,0x186f373e,0x4901,0x48d7,0xb3,0xdd,0x8b,0x20,0x9c,0x91,0x33,0x42);
 
 #undef MIDL_DEFINE_GUID
 

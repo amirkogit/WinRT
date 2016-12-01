@@ -2,6 +2,8 @@ import "inspectable.idl";
 
 namespace Component
 {
+    runtimeclass Hen;
+
     [version(1.0)]
     [uuid(d259c600-6ec0-4b17-979d-5e04ee84c3fa)]
     interface IHen : IInspectable
@@ -10,9 +12,26 @@ namespace Component
     }
 
     [version(1.0)]
+    [uuid(6d5d2b7b-7760-47af-8aac-30167556aa7d)]
+    interface ILayer : IInspectable
+    {
+        [propget] HRESULT Eggs([out][retval] INT32 * value);
+    }
+
+    [version(1.0)]
+    [uuid(186f373e-4901-48d7-b3dd-8b209c913342)]
+    interface IHenFactory : IInspectable
+    {
+        HRESULT CreateHen([in] INT32 eggs,
+                          [out][retval] Hen ** instance);
+    }
+
+    [version(1.0)]
     [activatable(1.0)]
+    [activatable(IHenFactory, 1.0)]
     runtimeclass Hen
     {
         [default] interface IHen;
+        interface ILayer;
     }
 }
