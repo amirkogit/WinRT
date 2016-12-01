@@ -36,8 +36,9 @@ struct Hen : Implements<ABI::Component::IHen,
 };
 
 // Factory class for creating Hen objects
-struct HenFactory : 
-    Implements<IActivationFactory, ABI::Component::IHenFactory>
+struct HenFactory : Implements<IActivationFactory, 
+                               ABI::Component::IHenFactory,
+                               ABI::Component::IHenStatics>
 {
     HenFactory() noexcept
     {
@@ -62,6 +63,12 @@ struct HenFactory :
     {
         *instance = new (std::nothrow) Hen(eggs);
         return *instance ? S_OK : E_OUTOFMEMORY;
+    }
+
+    HRESULT __stdcall get_Layers(int * value) noexcept
+    {
+        *value = 123;
+        return S_OK;
     }
 };
 

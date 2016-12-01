@@ -4,9 +4,9 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Thu Dec 01 09:38:46 2016
+/* at Thu Dec 01 09:54:35 2016
  */
-/* Compiler settings for C:\Users\ashresth\AppData\Local\Temp\Component.idl-549fe519:
+/* Compiler settings for C:\Users\ashresth\AppData\Local\Temp\Component.idl-fae660e4:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -104,6 +104,13 @@ extern const MIDL_SERVER_INFO __x_ABI_CComponent_CIHenFactory_ServerInfo;
 extern const MIDL_STUBLESS_PROXY_INFO __x_ABI_CComponent_CIHenFactory_ProxyInfo;
 
 
+extern const MIDL_STUB_DESC Object_StubDesc;
+
+
+extern const MIDL_SERVER_INFO __x_ABI_CComponent_CIHenStatics_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO __x_ABI_CComponent_CIHenStatics_ProxyInfo;
+
+
 
 #if !defined(__RPC_WIN32__)
 #error  Invalid build platform for this stub.
@@ -146,6 +153,9 @@ static const Component_MIDL_PROC_FORMAT_STRING Component__MIDL_ProcFormatString 
 /* 28 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
+	/* Procedure get_Layers */
+
+
 	/* Procedure get_Eggs */
 
 /* 30 */	0x33,		/* FC_AUTO_HANDLE */
@@ -165,10 +175,16 @@ static const Component_MIDL_PROC_FORMAT_STRING Component__MIDL_ProcFormatString 
 
 	/* Parameter value */
 
+
+	/* Parameter value */
+
 /* 54 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
 /* 56 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
 /* 58 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
+
+	/* Return value */
+
 
 	/* Return value */
 
@@ -468,6 +484,75 @@ CInterfaceStubVtbl ___x_ABI_CComponent_CIHenFactoryStubVtbl =
 /* Standard interface: __MIDL_itf_Component_0000_0003, ver. 0.0,
    GUID={0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}} */
 
+
+/* Object interface: __x_ABI_CComponent_CIHenStatics, ver. 0.0,
+   GUID={0xb15199db,0x9db9,0x47af,{0xa0,0xa5,0x4b,0x2a,0x7b,0xe2,0x94,0x94}} */
+
+#pragma code_seg(".orpc")
+static const unsigned short __x_ABI_CComponent_CIHenStatics_FormatStringOffsetTable[] =
+    {
+    (unsigned short) -1,
+    (unsigned short) -1,
+    (unsigned short) -1,
+    30
+    };
+
+static const MIDL_STUBLESS_PROXY_INFO __x_ABI_CComponent_CIHenStatics_ProxyInfo =
+    {
+    &Object_StubDesc,
+    Component__MIDL_ProcFormatString.Format,
+    &__x_ABI_CComponent_CIHenStatics_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0
+    };
+
+
+static const MIDL_SERVER_INFO __x_ABI_CComponent_CIHenStatics_ServerInfo = 
+    {
+    &Object_StubDesc,
+    0,
+    Component__MIDL_ProcFormatString.Format,
+    &__x_ABI_CComponent_CIHenStatics_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0,
+    0};
+CINTERFACE_PROXY_VTABLE(7) ___x_ABI_CComponent_CIHenStaticsProxyVtbl = 
+{
+    &__x_ABI_CComponent_CIHenStatics_ProxyInfo,
+    &IID___x_ABI_CComponent_CIHenStatics,
+    IUnknown_QueryInterface_Proxy,
+    IUnknown_AddRef_Proxy,
+    IUnknown_Release_Proxy ,
+    0 /* IInspectable::GetIids */ ,
+    0 /* IInspectable::GetRuntimeClassName */ ,
+    0 /* IInspectable::GetTrustLevel */ ,
+    (void *) (INT_PTR) -1 /* __x_ABI_CComponent_CIHenStatics::get_Layers */
+};
+
+
+static const PRPC_STUB_FUNCTION __x_ABI_CComponent_CIHenStatics_table[] =
+{
+    STUB_FORWARDING_FUNCTION,
+    STUB_FORWARDING_FUNCTION,
+    STUB_FORWARDING_FUNCTION,
+    NdrStubCall2
+};
+
+CInterfaceStubVtbl ___x_ABI_CComponent_CIHenStaticsStubVtbl =
+{
+    &IID___x_ABI_CComponent_CIHenStatics,
+    &__x_ABI_CComponent_CIHenStatics_ServerInfo,
+    7,
+    &__x_ABI_CComponent_CIHenStatics_table[-3],
+    CStdStubBuffer_DELEGATING_METHODS
+};
+
+
+/* Standard interface: __MIDL_itf_Component_0000_0004, ver. 0.0,
+   GUID={0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}} */
+
 static const MIDL_STUB_DESC Object_StubDesc = 
     {
     0,
@@ -497,6 +582,7 @@ const CInterfaceProxyVtbl * const _Component_ProxyVtblList[] =
     ( CInterfaceProxyVtbl *) &___x_ABI_CComponent_CIHenProxyVtbl,
     ( CInterfaceProxyVtbl *) &___x_ABI_CComponent_CIHenFactoryProxyVtbl,
     ( CInterfaceProxyVtbl *) &___x_ABI_CComponent_CILayerProxyVtbl,
+    ( CInterfaceProxyVtbl *) &___x_ABI_CComponent_CIHenStaticsProxyVtbl,
     0
 };
 
@@ -505,6 +591,7 @@ const CInterfaceStubVtbl * const _Component_StubVtblList[] =
     ( CInterfaceStubVtbl *) &___x_ABI_CComponent_CIHenStubVtbl,
     ( CInterfaceStubVtbl *) &___x_ABI_CComponent_CIHenFactoryStubVtbl,
     ( CInterfaceStubVtbl *) &___x_ABI_CComponent_CILayerStubVtbl,
+    ( CInterfaceStubVtbl *) &___x_ABI_CComponent_CIHenStaticsStubVtbl,
     0
 };
 
@@ -513,11 +600,13 @@ PCInterfaceName const _Component_InterfaceNamesList[] =
     "__x_ABI_CComponent_CIHen",
     "__x_ABI_CComponent_CIHenFactory",
     "__x_ABI_CComponent_CILayer",
+    "__x_ABI_CComponent_CIHenStatics",
     0
 };
 
 const IID *  const _Component_BaseIIDList[] = 
 {
+    &IID_IInspectable,
     &IID_IInspectable,
     &IID_IInspectable,
     &IID_IInspectable,
@@ -531,9 +620,9 @@ int __stdcall _Component_IID_Lookup( const IID * pIID, int * pIndex )
 {
     IID_BS_LOOKUP_SETUP
 
-    IID_BS_LOOKUP_INITIAL_TEST( _Component, 3, 2 )
+    IID_BS_LOOKUP_INITIAL_TEST( _Component, 4, 2 )
     IID_BS_LOOKUP_NEXT_TEST( _Component, 1 )
-    IID_BS_LOOKUP_RETURN_RESULT( _Component, 3, *pIndex )
+    IID_BS_LOOKUP_RETURN_RESULT( _Component, 4, *pIndex )
     
 }
 
@@ -544,7 +633,7 @@ const ExtendedProxyFileInfo Component_ProxyFileInfo =
     (const PCInterfaceName * ) & _Component_InterfaceNamesList,
     (const IID ** ) & _Component_BaseIIDList,
     & _Component_IID_Lookup, 
-    3,
+    4,
     2,
     0, /* table of [async_uuid] interfaces */
     0, /* Filler1 */

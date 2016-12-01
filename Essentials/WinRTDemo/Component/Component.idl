@@ -27,8 +27,16 @@ namespace Component
     }
 
     [version(1.0)]
+    [uuid(b15199db-9db9-47af-a0a5-4b2a7be29494)]
+    interface IHenStatics : IInspectable
+    {
+        [propget] HRESULT Layers([out][retval] INT32 * value);
+    }
+
+    [version(1.0)]
     [activatable(1.0)]
     [activatable(IHenFactory, 1.0)]
+    [static(IHenStatics, 1.0)]
     runtimeclass Hen
     {
         [default] interface IHen;

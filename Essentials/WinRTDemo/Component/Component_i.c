@@ -6,9 +6,9 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Thu Dec 01 09:38:46 2016
+/* at Thu Dec 01 09:54:35 2016
  */
-/* Compiler settings for C:\Users\ashresth\AppData\Local\Temp\Component.idl-549fe519:
+/* Compiler settings for C:\Users\ashresth\AppData\Local\Temp\Component.idl-fae660e4:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
@@ -74,6 +74,9 @@ MIDL_DEFINE_GUID(IID, IID___x_ABI_CComponent_CILayer,0x6d5d2b7b,0x7760,0x47af,0x
 
 
 MIDL_DEFINE_GUID(IID, IID___x_ABI_CComponent_CIHenFactory,0x186f373e,0x4901,0x48d7,0xb3,0xdd,0x8b,0x20,0x9c,0x91,0x33,0x42);
+
+
+MIDL_DEFINE_GUID(IID, IID___x_ABI_CComponent_CIHenStatics,0xb15199db,0x9db9,0x47af,0xa0,0xa5,0x4b,0x2a,0x7b,0xe2,0x94,0x94);
 
 #undef MIDL_DEFINE_GUID
 
