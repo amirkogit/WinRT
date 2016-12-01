@@ -10,6 +10,7 @@ This repository demonstrates the following :
 	- Demonstrates on usage of HSTRING, HSTRING_BUFFER ...
 	
 - Windows Runtime COM Activation
+	- Implement COM and Windows Runtime classes with modern C++
 	- ConsoleApp demonstrates how to use windows runtime activation methods. It uses ICalendar from
 	Windows.Globalization.Calendar
 	
@@ -18,7 +19,7 @@ This repository demonstrates the following :
 	.idl (Interface Definition Language)
 	
 - CSharpApp
-	- This project illustrates how to consume a component developed as windows runtime.
+	- This C# project illustrates how to consume a windows runtime component developed in standard C++.
 	
 References: 
 - Pluralsight course on "Essentials of Windows Runtime"
